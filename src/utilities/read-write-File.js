@@ -24,4 +24,18 @@ const writeFile = async (newTalker) => {
   }
 };
 
-module.exports = { readFile, writeFile };
+const editFile = async (neWcontent) => {
+  try {
+    const data = await readFile();
+    data.filter((content, index) => {
+      if (content.id === neWcontent.id) { data[index] = neWcontent; }
+      return data;
+    });
+    const contentFile = await fs.writeFile(completePath, JSON.stringify(data));
+    return contentFile;
+  } catch (e) {
+    return [];
+  }
+};
+
+module.exports = { readFile, writeFile, editFile };
