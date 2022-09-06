@@ -4,6 +4,7 @@ const { join } = require('path');
 const path = join('../talker.json');
 const completePath = join(__dirname, path);
 const readFile = async () => {
+console.log(completePath);
   try {
     const contentFile = await fs.readFile(completePath, 'utf-8');
     return JSON.parse(contentFile);
@@ -38,4 +39,10 @@ const editFile = async (neWcontent) => {
   }
 };
 
-module.exports = { readFile, writeFile, editFile };
+const deleteFile = async (id) => {
+  const data = await readFile();
+  const talkerFilter = data.filter((talker) => talker.id !== Number(id));
+  await fs.writeFile(completePath, JSON.stringify(talkerFilter));
+};
+
+module.exports = { readFile, writeFile, editFile, deleteFile };

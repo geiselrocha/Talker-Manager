@@ -1,5 +1,5 @@
 const express = require('express');
-const { readFile, writeFile, editFile } = require('../utilities/read-write-File');
+const { readFile, writeFile, editFile, deleteFile } = require('../utilities/read-write-File');
 const { tokenValidation } = require('../middlewares/validation/token');
 const { nameValidation } = require('../middlewares/validation/name');
 const { ageValidation } = require('../middlewares/validation/age');
@@ -20,6 +20,12 @@ expressRouter.get('/:id', async (req, res) => {
     const talkerId = data.filter((talker) => Number(talker.id) === Number(id))[0];
     if (!talkerId) { res.status(404).json({ message: 'Pessoa palestrante não encontrada' }); }
     res.status(200).json(talkerId);
+});
+
+expressRouter.delete('/:id', tokenValidation, async (req, res) => {
+    const { id } = req.params;
+    await deleteFile(id);
+    res.status(204).end();
 });
 
 expressRouter.use(tokenValidation, nameValidation, ageValidation, talkerValidation,
