@@ -14,6 +14,13 @@ expressRouter.get('/', async (_req, res) => {
     res.status(200).json(data);
 });
 
+expressRouter.get('/search', tokenValidation, async (req, res) => {
+    const data = await readFile();
+    const searchTerm = req.query.q;
+    const talkers = data.filter((t) => t.name.includes(searchTerm));
+    res.status(200).json(talkers);
+});
+
 expressRouter.get('/:id', async (req, res) => {
     const data = await readFile();
     const { id } = req.params;
